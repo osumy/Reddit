@@ -15,9 +15,11 @@ public class Account {
     private ArrayList<Post> posts;
     private ArrayList<UUID> subreddits;
 
-    public Account(){
+    public Account(String username, String email, String password){
         id = UUID.randomUUID();
-
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
     public static boolean isValid(String data, String type){
