@@ -32,6 +32,7 @@ public class Account {
     private static void setDispName(String dispName){ myAccount.dispName = dispName; }
     private static void setBio(String bio){ myAccount.bio = bio; }
 
+    // ========== Account Management ==========
     public static boolean isValid(String data, String type){
         if (type.equals("username"))
             return Pattern.matches("^[\\w][\\w_.]{5,20}", data); // Minimum 5 and Maximum 20 characters, does not start with a . or _
@@ -42,21 +43,10 @@ public class Account {
 
         return false;
     }
-    private static void fillList(ArrayList<String> list, String table, String column) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table);
-
-        while (resultSet.next()){
-            list.add(resultSet.getString(column));
-        }
-
-        connection.close();
-    }
     // false to check isUnique
     public static boolean exist(String data, String table, String column, boolean isExist) throws SQLException {
         ArrayList<String> dataList = new ArrayList<>();
-        fillList(dataList, table, column);
+        DBTools.fillList(dataList, table, column);
 
         if (column.equals("password"))
             data = DigestUtils.sha256Hex(data);
@@ -108,4 +98,22 @@ public class Account {
         connection.close();
     }
     public static void logout(){ myAccount = null; }
+
+    // ========== Edit Profile ==========
+    public void updateEmail(String email) throws SQLException {
+        DBTools.updateCell(email, "users", myAccount.id.toString(), "email");
+        setUsername(email);
+    }
+    public void updatePassword(String password) throws SQLException {
+        DBTools.updateCell(password, "users", myAccount.id.toString(), "password");
+        setUsername(password);
+    }
+    public void updateDispName(String dispName) throws SQLException {
+        DBTools.updateCell(dispName, "users", myAccount.id.toString(), "dispName");
+        setUsername(dispName);
+    }
+    public void updateBio(String bio) throws SQLException {
+        DBTools.updateCell(bio, "users", myAccount.id.toString(), "bio");
+        setUsername(bio);
+    }
 }
