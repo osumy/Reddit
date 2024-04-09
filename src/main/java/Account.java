@@ -32,26 +32,29 @@ public class Account {
             return Pattern.matches("\"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$\"\n", data); // Minimum eight characters, at least one number
         return false;
     }
-    public static boolean isUnique(String data, String table, String column) throws SQLException {
-        ArrayList<String> dataList = new ArrayList<>();
+    private static void fillList(ArrayList<String> list, String table, String column) throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table);
 
         while (resultSet.next()){
-            dataList.add(resultSet.getString(column));
+            list.add(resultSet.getString(column));
         }
 
-        if (column.equals("password"))
-            data = DigestUtils.sha256Hex(data);;
-        for (String d : dataList)
-            if (d.equals(data)){
-                connection.close();
-                return false;
-            }
-
         connection.close();
-        return true;
+    }
+    public static boolean exist(String data, String table, String column, boolean isExist) throws SQLException { // false to check isUnique
+        ArrayList<String> dataList = new ArrayList<>();
+        fillList(dataList, table, column);
+
+        if (column.equals("password"))
+            data = DigestUtils.sha256Hex(data);
+
+        for (String d : dataList)
+            if (d.equals(data))
+                return isExist;
+
+        return !isExist;
     }
     public void signUp() throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
