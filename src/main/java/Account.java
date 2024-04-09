@@ -15,7 +15,7 @@ public class Account {
     //private ArrayList<Comment> comments;
     //private ArrayList<Post> posts;
     //private ArrayList<UUID> subreddits;
-    static Account account;
+    static Account myAccount;
 
     public Account(String username, String email, String password){
         id = UUID.randomUUID();
@@ -25,12 +25,12 @@ public class Account {
     }
     public Account(){}
 
-    private static void setId(UUID id){ account.id = id; }
-    private static void setUsername(String username){ account.username = username; }
-    private static void setEmail(String email){ account.email = email; }
-    private static void setKarma(int karma){ account.karma = karma; }
-    private static void setDispName(String dispName){ account.dispName = dispName; }
-    private static void setBio(String bio){ account.bio = bio; }
+    private static void setId(UUID id){ myAccount.id = id; }
+    private static void setUsername(String username){ myAccount.username = username; }
+    private static void setEmail(String email){ myAccount.email = email; }
+    private static void setKarma(int karma){ myAccount.karma = karma; }
+    private static void setDispName(String dispName){ myAccount.dispName = dispName; }
+    private static void setBio(String bio){ myAccount.bio = bio; }
 
     public static boolean isValid(String data, String type){
         if (type.equals("username"))
@@ -94,7 +94,7 @@ public class Account {
                 if (resultSet.getString(3).equals(user))
                     isOK = true;
             if (isOK){
-                account = new Account();
+                myAccount = new Account();
                 setId(UUID.fromString(resultSet.getString(1)));
                 setUsername(resultSet.getString(2));
                 setEmail(resultSet.getString(3));
@@ -107,4 +107,5 @@ public class Account {
 
         connection.close();
     }
+    public static void logout(){ myAccount = null; }
 }

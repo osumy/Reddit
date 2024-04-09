@@ -12,7 +12,7 @@ public class Main {
 //        if (Account.isValid(username, "username") && Account.isValid(email, "email") && Account.isValid(password, "password"))
 //            if (Account.exist(username, "users", "username", true) || Account.exist(email, "users", "email", true))
                 Account.login(username, true);
-        Account account = Account.account;
+        Account account = Account.myAccount;
         int a = 3;
 
 //        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
