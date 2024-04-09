@@ -45,6 +45,6 @@ public class Main {
 //        Updating...
 //        statement.executeUpdate("UPDATE subreddits SET title='abc' WHERE title='aa'"); //WHERE ... AND ...
 
-
+        DBTools.connection.close();
     }
 }
