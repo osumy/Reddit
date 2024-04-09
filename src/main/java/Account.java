@@ -50,5 +50,17 @@ public class Account {
         connection.close();
         return true;
     }
+    public void signUp() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        String sql = " INSERT INTO users (ID, username, email, password)" + " VALUES (?, ?, ?, ?)";
 
+        PreparedStatement preparedStmt = connection.prepareStatement(sql);
+        preparedStmt.setString (1, id.toString());
+        preparedStmt.setString (2, username);
+        preparedStmt.setString (3, email);
+        preparedStmt.setString (4, password);
+        preparedStmt.execute();
+
+        connection.close();
+    }
 }

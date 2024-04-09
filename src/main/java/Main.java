@@ -2,10 +2,10 @@ import java.sql.*;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-        /*Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
-        Statement statement = connection.createStatement();
-
-        connection.close();*/
+//        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+//        Statement statement = connection.createStatement();
+//
+//        connection.close();
 
 //        Reading...
 //        ResultSet resultSet = statement.executeQuery("SELECT * FROM subreddits");
