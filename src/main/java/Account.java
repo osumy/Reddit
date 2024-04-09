@@ -12,9 +12,10 @@ public class Account {
     private int karma;
     private String dispName;
     private String bio; // About you
-    private ArrayList<Comment> comments;
-    private ArrayList<Post> posts;
-    private ArrayList<UUID> subreddits;
+    //private ArrayList<Comment> comments;
+    //private ArrayList<Post> posts;
+    //private ArrayList<UUID> subreddits;
+    static Account account;
 
     public Account(String username, String email, String password){
         id = UUID.randomUUID();
@@ -22,6 +23,14 @@ public class Account {
         this.email = email;
         this.password = DigestUtils.sha256Hex(password);
     }
+    public Account(){}
+
+    private static void setId(UUID id){ account.id = id; }
+    private static void setUsername(String username){ account.username = username; }
+    private static void setEmail(String email){ account.email = email; }
+    private static void setKarma(int karma){ account.karma = karma; }
+    private static void setDispName(String dispName){ account.dispName = dispName; }
+    private static void setBio(String bio){ account.bio = bio; }
 
     public static boolean isValid(String data, String type){
         if (type.equals("username"))
@@ -29,7 +38,8 @@ public class Account {
         else if (type.equals("email"))
             return Pattern.matches("^[a-zA-Z][\\w]+@([\\w-]+\\.)+[\\w-]{2,4}", data);
         else if (type.equals("password"))
-            return Pattern.matches("\"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$\"\n", data); // Minimum eight characters, at least one number
+            return Pattern.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-.]).{8,}", data); //Minimum eight characters, at least one upper case English letter, one lower case English letter, one number and one special character
+
         return false;
     }
     private static void fillList(ArrayList<String> list, String table, String column) throws SQLException {
@@ -43,7 +53,8 @@ public class Account {
 
         connection.close();
     }
-    public static boolean exist(String data, String table, String column, boolean isExist) throws SQLException { // false to check isUnique
+    // false to check isUnique
+    public static boolean exist(String data, String table, String column, boolean isExist) throws SQLException {
         ArrayList<String> dataList = new ArrayList<>();
         fillList(dataList, table, column);
 
@@ -66,6 +77,33 @@ public class Account {
         preparedStmt.setString (3, email);
         preparedStmt.setString (4, password);
         preparedStmt.execute();
+
+        connection.close();
+    }
+    public static void login(String user, boolean isUsername) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+
+        while (resultSet.next()){
+            boolean isOK = false;
+            if (isUsername)
+                if (resultSet.getString(2).equals(user))
+                    isOK = true;
+            else
+                if (resultSet.getString(3).equals(user))
+                    isOK = true;
+            if (isOK){
+                account = new Account();
+                setId(UUID.fromString(resultSet.getString(1)));
+                setUsername(resultSet.getString(2));
+                setEmail(resultSet.getString(3));
+                //setPassword(resultSet.getString(4)); not necessary!
+                setKarma(resultSet.getInt(5));
+                setDispName(resultSet.getString(6));
+                setBio(resultSet.getString(7));
+            }
+        }
 
         connection.close();
     }

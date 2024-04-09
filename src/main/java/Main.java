@@ -3,17 +3,17 @@ import java.util.Scanner;
 
 public class Main {
 
-    Account account;
-
     public static void main(String[] args) throws SQLException {
         Scanner sc = new Scanner(System.in);
         String username = sc.next();
         String email = sc.next();
         String password = sc.next();
 
-        if (Account.isValid(username, "username") && Account.isValid(email, "email") && Account.isValid(password, "password"))
-            if (Account.exist(username, "users", "username", true) || Account.exist(email, "users", "email", true))
-
+//        if (Account.isValid(username, "username") && Account.isValid(email, "email") && Account.isValid(password, "password"))
+//            if (Account.exist(username, "users", "username", true) || Account.exist(email, "users", "email", true))
+                Account.login(username, true);
+        Account account = Account.account;
+        int a = 3;
 
 //        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
 //        Statement statement = connection.createStatement();
