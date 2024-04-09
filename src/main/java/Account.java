@@ -57,19 +57,7 @@ public class Account {
 
         return !isExist;
     }
-    public void signUp() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
-        String sql = "INSERT INTO users (ID, username, email, password)" + " VALUES (?, ?, ?, ?)";
-
-        PreparedStatement preparedStmt = connection.prepareStatement(sql);
-        preparedStmt.setString (1, id.toString());
-        preparedStmt.setString (2, username);
-        preparedStmt.setString (3, email);
-        preparedStmt.setString (4, password);
-        preparedStmt.execute();
-
-        connection.close();
-    }
+    public void signUp() throws SQLException { DBTools.insertUser(id, username, email, password); }
     public static void login(String user, boolean isUsername) throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
         Statement statement = connection.createStatement();

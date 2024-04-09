@@ -33,10 +33,9 @@ public class Main {
 //        }
 
 //        Inserting...
-//        String sql = " insert into subreddits (title)"
-//                + " values (?)";
+//        String sql = "insert into subreddits (title)" + " values (?)";
 //        PreparedStatement preparedStmt = connection.prepareStatement(sql);
-//        preparedStmt.setString (1, "aa");
+//        preparedStmt.setString(1, "aa");
 //        preparedStmt.execute();
 
 
