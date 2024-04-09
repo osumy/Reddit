@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import org.apache.commons.codec.digest.DigestUtils;
 
 public class Account {
     private UUID id;
@@ -19,7 +20,7 @@ public class Account {
         id = UUID.randomUUID();
         this.username = username;
         this.email = email;
-        this.password = password;
+        this.password = DigestUtils.sha256Hex(password);
     }
 
     public static boolean isValid(String data, String type){
@@ -28,7 +29,7 @@ public class Account {
         else if (type.equals("email"))
             return Pattern.matches("^[a-zA-Z][\\w]+@([\\w-]+\\.)+[\\w-]{2,4}", data);
         else if (type.equals("password"))
-            return Pattern.matches("\"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$\"\n", data); // Minimum eight characters, at least one letter and one number:
+            return Pattern.matches("\"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$\"\n", data); // Minimum eight characters, at least one number
         return false;
     }
     public static boolean isUnique(String data, String table, String column) throws SQLException {
@@ -41,6 +42,8 @@ public class Account {
             dataList.add(resultSet.getString(column));
         }
 
+        if (column.equals("password"))
+            data = DigestUtils.sha256Hex(data);;
         for (String d : dataList)
             if (d.equals(data)){
                 connection.close();
@@ -52,7 +55,7 @@ public class Account {
     }
     public void signUp() throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
-        String sql = " INSERT INTO users (ID, username, email, password)" + " VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (ID, username, email, password)" + " VALUES (?, ?, ?, ?)";
 
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
         preparedStmt.setString (1, id.toString());

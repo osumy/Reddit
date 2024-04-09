@@ -1,7 +1,15 @@
 import java.sql.*;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
+        Scanner sc = new Scanner(System.in);
+        String username = sc.next();
+        String email = sc.next();
+        String password = sc.next();
+        Account ac = new Account(username, email, password);
+        ac.signUp();
+
 //        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
 //        Statement statement = connection.createStatement();
 //
