@@ -111,14 +111,18 @@ public class DBTools {
         preparedStmt.setString (6, mainAdminID.toString());
         preparedStmt.execute();
     }
-    public static void insertPost(UUID id, String username, String email, String password) throws SQLException {
-        String sql = "INSERT INTO users (ID, username, email, password)" + " VALUES (?, ?, ?, ?)";
+    public static void insertPost(UUID id, UUID subredditID, UUID ownerID, String title, String text, String dateTime, String tags) throws SQLException {
+        String sql = "INSERT INTO posts (ID, subredditID, ownerID, title, text, dateTime, tags, karma)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
         preparedStmt.setString (1, id.toString());
-        preparedStmt.setString (2, username);
-        preparedStmt.setString (3, email);
-        preparedStmt.setString (4, password);
+        preparedStmt.setString (2, subredditID.toString());
+        preparedStmt.setString (3, ownerID.toString());
+        preparedStmt.setString (4, title);
+        preparedStmt.setString (5, text);
+        preparedStmt.setString (6, dateTime);
+        preparedStmt.setString (7, tags);
+        preparedStmt.setInt (8, 0);
         preparedStmt.execute();
     }
     public static void insertComment(UUID id, String username, String email, String password) throws SQLException {

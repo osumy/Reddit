@@ -1,3 +1,5 @@
+import org.sqlite.core.DB;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,5 +42,10 @@ public class Post extends Content {
         }
 
         return PostList;
+    }
+    public void createPost() throws SQLException {
+        DBTools.insertPost(id, subredditID, ownerID, title, text, dateTime.toString(), tags);
+        DBTools.insertIDtoIDListCell("users", ownerID , "postID", id);
+        DBTools.insertIDtoIDListCell("subreddits", subredditID , "postsID", id);
     }
 }
