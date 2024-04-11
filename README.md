@@ -5,3 +5,4 @@ Advanced Programming Mid-term Project
 
 * v0.1   Account Management
 * v0.1.2 Some Bugs Fixed
+* v0.2 Subreddit & DB
