@@ -1,7 +1,11 @@
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class Account {
@@ -11,19 +15,38 @@ public class Account {
     private String password;
     private int karma;
     private String dispName;
-    private String bio; // About you
-    //private ArrayList<Comment> comments;
-    //private ArrayList<Post> posts;
-    //private ArrayList<UUID> subreddits;
-    static Account myAccount;
+    private String bio;
+    private ArrayList<String> mySubreddits;
+    private ArrayList<Post> myPosts;
+    private ArrayList<Comment> myComments;
+
+    public static Account myAccount;
 
     public Account(String username, String email, String password){
         id = UUID.randomUUID();
         this.username = username;
         this.email = email;
         this.password = DigestUtils.sha256Hex(password);
+        mySubreddits = new ArrayList<>();
+        myComments = new ArrayList<>();
+        myPosts =  new ArrayList<>();
     }
-    public Account(){}
+    public Account(){
+        mySubreddits = new ArrayList<>();
+        myComments = new ArrayList<>();
+        myPosts =  new ArrayList<>();
+    }
+    public Account(UUID id, String username, String email, int karma, String dispName, String bio, ArrayList<String> mySubreddits, ArrayList<Post> myPosts, ArrayList<Comment> myComments){
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.karma = karma;
+        this.dispName = dispName;
+        this.bio = bio;
+        this.mySubreddits = mySubreddits;
+        this.myPosts = myPosts;
+        this.myComments = myComments;
+    }
 
     private static void setId(UUID id){ myAccount.id = id; }
     private static void setUsername(String username){ myAccount.username = username; }
@@ -31,6 +54,9 @@ public class Account {
     private static void setKarma(int karma){ myAccount.karma = karma; }
     private static void setDispName(String dispName){ myAccount.dispName = dispName; }
     private static void setBio(String bio){ myAccount.bio = bio; }
+    private static void setMySubreddits(ArrayList<String> subreddits){ myAccount.mySubreddits = subreddits; }
+    private static void setMyPosts(ArrayList<Post> posts){ myAccount.myPosts = posts; }
+    private static void setMyComments(ArrayList<Comment> comments){ myAccount.myComments = comments; }
 
     // ========== Account Management ==========
     public static boolean isValid(String data, String type){
@@ -43,24 +69,9 @@ public class Account {
 
         return false;
     }
-    // false to check isUnique
-    public static boolean exist(String data, String table, String column, boolean isExist) throws SQLException {
-        ArrayList<String> dataList = new ArrayList<>();
-        DBTools.fillList(dataList, table, column);
-
-        if (column.equals("password"))
-            data = DigestUtils.sha256Hex(data);
-
-        for (String d : dataList)
-            if (d.equals(data))
-                return isExist;
-
-        return !isExist;
-    }
     public void signUp() throws SQLException { DBTools.insertUser(id, username, email, password); }
     public static void login(String user, boolean isUsername) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
-        Statement statement = connection.createStatement();
+        Statement statement = DBTools.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
 
         while (resultSet.next()){
@@ -80,10 +91,11 @@ public class Account {
                 setKarma(resultSet.getInt(5));
                 setDispName(resultSet.getString(6));
                 setBio(resultSet.getString(7));
+                setMySubreddits(Subreddit.IDtoTitle(DBTools.splitID(resultSet.getString(8))));
+                setMyPosts(Post.IDtoPostList(Pattern.compile(",").splitAsStream(resultSet.getString(9)).toList()));
+                setMyComments(Comment.IDtoCommentList(Pattern.compile(",").splitAsStream(resultSet.getString(10)).toList()));
             }
         }
-
-        connection.close();
     }
     public static void logout(){ myAccount = null; }
 
@@ -103,5 +115,20 @@ public class Account {
     public void updateBio(String bio) throws SQLException {
         DBTools.updateCell(bio, "users", myAccount.id.toString(), "bio");
         setUsername(bio);
+    }
+
+
+    public static ArrayList<String> IDtoUsernameList(ArrayList<String> IDList) throws SQLException {
+        ArrayList<String> usernames = new ArrayList<>();
+        Statement statement = DBTools.connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+
+        while (resultSet.next()){
+            if (DBTools.isAmong(resultSet.getString(1), IDList)){
+                usernames.add(resultSet.getString(2));
+            }
+        }
+
+        return usernames;
     }
 }

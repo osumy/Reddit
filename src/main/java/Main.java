@@ -1,18 +1,24 @@
 import org.sqlite.core.DB;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        Scanner sc = new Scanner(System.in);
-        String username = sc.next();
+        Search.subredditSearch("aa");
+        Subreddit sb = Search.subreddit;
+        //        Scanner sc = new Scanner(System.in);
+//        String username = sc.next();
 
 
 //        String username = sc.next();
-//        String email = sc.next();
+//        //String email = sc.next();
 //        String password = sc.next();
+
+//        Account account = Account.myAccount;
 //
 ////        if (Account.isValid(username, "username") && Account.isValid(email, "email") && Account.isValid(password, "password"))
 ////            if (Account.exist(username, "users", "username", true) || Account.exist(email, "users", "email", true))
