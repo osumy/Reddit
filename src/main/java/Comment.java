@@ -49,5 +49,8 @@ public class Comment extends Content{
 
         return CommentList;
     }
-
+    public void createComment() throws SQLException {
+        DBTools.insertComment(id, subredditID, postID, ownerID, text, dateTime.toString(), tags, isReply, replyOnID);
+        DBTools.insertIDtoIDListCell("users", ownerID , "commentID", id);
+    }
 }
