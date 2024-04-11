@@ -10,8 +10,20 @@ public abstract class Content {
     private String text;
     private LocalDateTime dateTime;
     private String tags;
-    private int karma = 0;
-    private ArrayList<UUID> upVotes = new ArrayList<>();
-    private ArrayList<UUID> downVotes = new ArrayList<>();
+    private int karma;
+    private ArrayList<UUID> upVotes;
+    private ArrayList<UUID> downVotes;
+
+    protected Content(UUID id, UUID subredditID, UUID ownerID, String text, LocalDateTime dateTime, String tags, int karma, ArrayList<UUID> upVotes, ArrayList<UUID> downVotes){
+        this.id = id;
+        this.subredditID = subredditID;
+        this.ownerID = ownerID;
+        this.text = text;
+        this.dateTime = dateTime;
+        this.tags = tags;
+        this.karma = karma;
+        this.upVotes = upVotes;
+        this.downVotes = downVotes;
+    }
 
 }
