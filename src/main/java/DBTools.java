@@ -52,6 +52,15 @@ public class DBTools {
             IDArrayList.add(UUID.fromString(s));
         return IDArrayList;
     }
+    public static void insertIDtoIDListCell(String table, UUID rowID, String column, UUID id) throws SQLException {
+        String newIDList = "";
+        String DBIDList = DBTools.readCell(table, rowID.toString(), column);
+        if (DBIDList == null || DBIDList.isEmpty())
+            newIDList = id.toString();
+        else
+            newIDList += DBIDList + "," + id.toString();
+        DBTools.updateCell(newIDList, table, rowID.toString(), column);
+    }
     // false to check isUnique
     public static boolean exist(String data, String table, String column, boolean isExist) throws SQLException {
         ArrayList<String> dataList = new ArrayList<>();
@@ -80,13 +89,14 @@ public class DBTools {
         return null;
     }
     public static void insertUser(UUID id, String username, String email, String password) throws SQLException {
-        String sql = "INSERT INTO users (ID, username, email, password) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (ID, username, email, password, karma) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
         preparedStmt.setString (1, id.toString());
         preparedStmt.setString (2, username);
         preparedStmt.setString (3, email);
         preparedStmt.setString (4, password);
+        preparedStmt.setInt (5, 0);
         preparedStmt.execute();
     }
     public static void insertSubreddit(UUID id, String title, String description, UUID mainAdminID) throws SQLException {

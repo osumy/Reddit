@@ -8,8 +8,7 @@ import java.util.UUID;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        Search.subredditSearch("aa");
-        Subreddit sb = Search.subreddit;
+        Subreddit.addNewAdmin(UUID.fromString("0333e07f-f968-42e1-a3de-d2e14cda6b74"), UUID.randomUUID());
         //        Scanner sc = new Scanner(System.in);
 //        String username = sc.next();
 

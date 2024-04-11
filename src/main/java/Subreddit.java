@@ -1,3 +1,5 @@
+import org.sqlite.core.DB;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -48,8 +50,37 @@ public class Subreddit {
         return titleList;
     }
     public static void joinSubreddit(UUID subredditID, UUID userID) throws SQLException {
-        String membersID = DBTools.readCell("subreddits", subredditID.toString(), "membersID");
-        membersID += "," + userID.toString();
-        DBTools.updateCell(membersID, "subreddits", subredditID.toString(), "membersID");
+        DBTools.insertIDtoIDListCell("subreddits", subredditID, "membersID", userID);
+        DBTools.insertIDtoIDListCell("users", userID, "subredditID", subredditID);
+    }
+    public static void addNewAdmin(UUID subredditID, UUID userID) throws SQLException { DBTools.insertIDtoIDListCell("subreddits", subredditID, "adminsID", userID); }
+    public static void newDescription(String description, UUID subredditID) throws SQLException { DBTools.updateCell(description, "subreddits", subredditID.toString(), "description"); }
+    public static void deletePost(UUID subredditID, UUID postID) throws SQLException {
+        ArrayList<String> posts = DBTools.splitID(DBTools.readCell("subreddits", subredditID.toString(), "postsID"));
+        for (int i = 0; i < posts.size(); i++){
+            if (posts.get(i).equals(postID.toString()))
+                posts.remove(i);
+        }
+        String newPostsID = "";
+        for (int i = 0; i < posts.size(); i++){
+            if (i > 0)
+                newPostsID += ",";
+            newPostsID += posts.get(i);
+        }
+        DBTools.updateCell(newPostsID, "subreddits", subredditID.toString(), "postsID");
+    }
+    public static void kickUser(UUID subredditID, UUID userID) throws SQLException {
+        ArrayList<String> members = DBTools.splitID(DBTools.readCell("subreddits", subredditID.toString(), "membersID"));
+        for (int i = 0; i < members.size(); i++){
+            if (members.get(i).equals(userID.toString()))
+                members.remove(i);
+        }
+        String newMembersID = "";
+        for (int i = 0; i < members.size(); i++){
+            if (i > 0)
+                newMembersID += ",";
+            newMembersID += members.get(i);
+        }
+        DBTools.updateCell(newMembersID, "subreddits", subredditID.toString(), "membersID");
     }
 }

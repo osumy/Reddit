@@ -12,7 +12,7 @@ public class Search {
 
     public static ArrayList<String> search() throws SQLException {
         ArrayList<String> searchResult = new ArrayList<>();
-        boolean isUser = search.charAt(0) == 'r';
+        boolean isUser = search.charAt(0) == 'u';
         String searchText = search.substring(2);
         Statement statement = DBTools.connection.createStatement();
         ResultSet resultSet;
@@ -34,7 +34,6 @@ public class Search {
 
         return searchResult;
     }
-
     public static void userSearch(String username) throws SQLException {
         Statement statement = DBTools.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
@@ -71,4 +70,5 @@ public class Search {
             }
         }
     }
+
 }
