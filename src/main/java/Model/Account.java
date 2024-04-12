@@ -94,6 +94,7 @@ public class Account {
                 setMySubreddits(Subreddit.IDtoTitle(Model.DBTools.splitID(resultSet.getString(8))));
                 setMyPosts(Model.Post.IDtoPostList(Pattern.compile(",").splitAsStream(resultSet.getString(9)).toList()));
                 setMyComments(Model.Comment.IDtoCommentList(Pattern.compile(",").splitAsStream(resultSet.getString(10)).toList()));
+                break;
             }
         }
     }

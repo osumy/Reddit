@@ -1,26 +1,29 @@
+package MainApp;
+
 import Model.DBTools;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.sql.*;
+import java.util.Objects;
 
 public class Main extends Application {
+    public static Stage loginStage;
     @Override
     public void start(Stage stage) throws Exception{
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("View/LoginPage.fxml"));
-        Parent p = fxmlLoader.load();
-        Scene loginScene = new Scene(p);
-        stage.setScene(loginScene);
-        stage.show();
+        loginStage = new Stage(StageStyle.UTILITY);
+        Scene loginScene = new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("View/LoginPage.fxml"))));
+        loginStage.setScene(loginScene);
+        loginStage.centerOnScreen();
+        loginStage.show();
     }
 
 
     public static void main(String[] args) throws SQLException {
         launch(args);
-
 
 
         //        Scanner sc = new Scanner(System.in);

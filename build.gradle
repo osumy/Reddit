@@ -3,7 +3,7 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
-group = 'osumyy'
+group = 'osumyy.reddit'
 version = '1.0'
 
 repositories {
@@ -17,7 +17,7 @@ javafx {
 }
 
 application {
-    mainClass = "Main"
+    mainClass = "MainApp.Main"
 }
 
 dependencies {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField layoutX="94.0" layoutY="60.0" promptText="Username">
+         <font>
+            <Font name="Calibri Light" size="18.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="94.0" layoutY="140.0" promptText="Email">
+         <font>
+            <Font name="Calibri Light" size="18.0" />
+         </font>
+      </TextField>
+      <PasswordField layoutX="94.0" layoutY="220.0" promptText="Password">
+         <font>
+            <Font name="Calibri Light" size="18.0" />
+         </font>
+      </PasswordField>
+      <Button layoutX="155.0" layoutY="346.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="89.0" text="Create">
+         <font>
+            <Font name="Calibri Light" size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="14.0" layoutY="455.0" textFill="#ec0707" />
+   </children>
+</Pane>

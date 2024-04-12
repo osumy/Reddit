@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginPageController">
+   <children>
+      <Button layoutX="155.0" layoutY="321.0" mnemonicParsing="false" onAction="#login" prefHeight="35.0" prefWidth="90.0" text="Login">
+         <font>
+            <Font name="Calibri Light" size="18.0" />
+         </font></Button>
+      <TextField fx:id="usernameTextField" layoutX="94.0" layoutY="87.0" promptText="Username or Email">
+         <font>
+            <Font name="Calibri Light" size="18.0" />
+         </font></TextField>
+      <PasswordField fx:id="passwordTextField" layoutX="94.0" layoutY="182.0" promptText="Password">
+         <font>
+            <Font name="Calibri Light" size="18.0" />
+         </font></PasswordField>
+      <Hyperlink layoutX="158.0" layoutY="374.0" onAction="#newAccount" text="New Account">
+         <font>
+            <Font name="Calibri Light" size="14.0" />
+         </font></Hyperlink>
+      <Label fx:id="errorLabel" layoutX="14.0" layoutY="461.0" textFill="#f71010">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
