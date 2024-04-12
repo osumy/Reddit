@@ -148,6 +148,23 @@ public class Account {
         connection.close();
         return usernames;
     }
+    public static String  usernameToID(String username) throws SQLException {
+        String ID = "";
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+
+        while (resultSet.next()){
+            if (resultSet.getString(2).equals(username)){
+                ID += resultSet.getString(1);
+                connection.close();
+                return ID;
+            }
+        }
+
+        connection.close();
+        return ID;
+    }
     private static boolean voteAble(String table, String id) throws SQLException {
         ArrayList<String> upVotes = Model.DBTools.splitID(Model.DBTools.readCell(table, id, "upVotesID"));
         ArrayList<String> downVotes = Model.DBTools.splitID(Model.DBTools.readCell(table, id, "downVotesID"));

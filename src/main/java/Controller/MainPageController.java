@@ -13,10 +13,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -29,10 +36,12 @@ public class MainPageController {
     public ListView<String> searchListView;
     @FXML
     public Button logoutButton;
+    @FXML
+    public ImageView logo;
 
 
     @FXML
-    public void initialize() {
+    public void initialize() throws FileNotFoundException {
         ArrayList<String> strings = new ArrayList<>();
         strings.add("r/");
         strings.add("u/");
@@ -54,6 +63,11 @@ public class MainPageController {
                 searchListView.setItems(items);
             }
         });
+
+        Path path = Paths.get("src/main/resources/logo.png");
+        String filePath = path.toAbsolutePath().toString();
+        logo.setImage(new Image(new FileInputStream(filePath)));
+
     }
 
     public void searchComboBoxAction(ActionEvent actionEvent) {
@@ -74,6 +88,6 @@ public class MainPageController {
     }
 
     public void profileClicked(ActionEvent actionEvent) throws IOException {
-        Profile.showProfile(Main.mainStage, Account.myAccount.getID(), false);
+        Profile.showProfile(Main.mainStage, Account.myAccount.getID(), true);
     }
 }

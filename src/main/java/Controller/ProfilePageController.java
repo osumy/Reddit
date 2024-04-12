@@ -9,17 +9,36 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import org.apache.commons.codec.cli.Digest;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class ProfilePageController {
     @FXML
+    private Label dispalynameLabel;
+    @FXML
     private Button displaynameEditButton;
+    @FXML
+    private TextField displaynameUpdateTextField;
+    @FXML
+    private Button displaynameUpdateButton;
+    @FXML
+    private Label emailLabel;
     @FXML
     private Button emailEditButton;
     @FXML
+    private TextField emailUpdateTextField;
+    @FXML
+    private Button emailUpdateButton;
+    @FXML
     private Button passwordEditButton;
+    @FXML
+    private TextField passwordUpdateTextField;
+    @FXML
+    private Button passwordUpdateButton;
     @FXML
     private Button bioEditButton;
     @FXML
@@ -28,10 +47,6 @@ public class ProfilePageController {
     private Label karmaLabel;
     @FXML
     private Label usernameLabel;
-    @FXML
-    private Label dispalynameLabel;
-    @FXML
-    private Label emailLabel;
 
 
 
@@ -74,21 +89,38 @@ public class ProfilePageController {
     }
 
     public void displaynameEditClick(ActionEvent actionEvent) throws SQLException {
-
+        displaynameUpdateButton.setVisible(true);
+        displaynameUpdateTextField.setVisible(true);
     }
 
-    public void displaynameUpdateClick(ActionEvent actionEvent) {
+    public void displaynameUpdateClick(ActionEvent actionEvent) throws SQLException {
+        Account.updateDispName(displaynameUpdateTextField.getText());
     }
 
     public void editBioClicked(ActionEvent actionEvent) throws SQLException {
         try {
-
-            DBTools.updateCell(bioTextArea.getText(), "users", "a17893b4-42c0-40bf-9e78-6076614d5b82", "bio");
+            Account.updateBio(bioTextArea.getText());
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        //Account.updateBio(bioTextArea.getText());
-        //DBTools.updateCell(bioTextArea.getText(), "users", Main.profileID.toString(), "bio");
+    }
+
+    public void editPasswordClicked(ActionEvent actionEvent) {
+        passwordUpdateTextField.setVisible(true);
+        passwordUpdateButton.setVisible(true);
+    }
+
+    public void updatePasswordClicked(ActionEvent actionEvent) throws SQLException {
+        Account.updatePassword(DigestUtils.sha256Hex(passwordUpdateTextField.getText()));
+    }
+
+    public void emailEditClicked(ActionEvent actionEvent) {
+        emailUpdateTextField.setVisible(true);
+        emailUpdateButton.setVisible(true);
+    }
+
+    public void emailUpdateClicked(ActionEvent actionEvent) throws SQLException {
+        Account.updateEmail(emailUpdateTextField.getText());
     }
 }

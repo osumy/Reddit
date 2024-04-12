@@ -46,13 +46,13 @@
             <Font name="Calibri Light" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="emailEditButton" layoutX="471.0" layoutY="147.0" mnemonicParsing="false" text="Edit" textAlignment="CENTER">
+      <Button fx:id="emailEditButton" layoutX="471.0" layoutY="147.0" mnemonicParsing="false" onAction="#emailEditClicked" text="Edit" textAlignment="CENTER">
          <font>
             <Font name="Calibri Light" size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="displaynameUpdateTextField1" layoutX="430.0" layoutY="147.0" prefHeight="29.0" prefWidth="156.0" visible="false" />
-      <Button fx:id="displaynameUpdateButton1" layoutX="378.0" layoutY="147.0" mnemonicParsing="false" text="✓" textAlignment="CENTER" visible="false">
+      <TextField fx:id="emailUpdateTextField" layoutX="430.0" layoutY="147.0" prefHeight="29.0" prefWidth="156.0" visible="false" />
+      <Button fx:id="emailUpdateButton" layoutX="378.0" layoutY="147.0" mnemonicParsing="false" onAction="#emailUpdateClicked" text="✓" textAlignment="CENTER" visible="false">
          <font>
             <Font name="Calibri Light" size="16.0" />
          </font>
@@ -62,13 +62,13 @@
             <Font name="Calibri Light" size="20.0" />
          </font>
       </Label>
-      <Button fx:id="passwordEditButton" layoutX="471.0" layoutY="183.0" mnemonicParsing="false" text="Edit" textAlignment="CENTER">
+      <Button fx:id="passwordEditButton" layoutX="471.0" layoutY="183.0" mnemonicParsing="false" onAction="#editPasswordClicked" text="Edit" textAlignment="CENTER">
          <font>
             <Font name="Calibri Light" size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="displaynameUpdateTextField11" layoutX="430.0" layoutY="183.0" prefHeight="29.0" prefWidth="156.0" visible="false" />
-      <Button fx:id="displaynameUpdateButton11" layoutX="378.0" layoutY="183.0" mnemonicParsing="false" text="✓" textAlignment="CENTER" visible="false">
+      <TextField fx:id="passwordUpdateTextField" layoutX="430.0" layoutY="183.0" prefHeight="29.0" prefWidth="156.0" visible="false" />
+      <Button fx:id="passwordUpdateButton" layoutX="378.0" layoutY="183.0" mnemonicParsing="false" onAction="#updatePasswordClicked" text="✓" textAlignment="CENTER" visible="false">
          <font>
             <Font name="Calibri Light" size="16.0" />
          </font>

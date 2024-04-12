@@ -8,9 +8,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class LoginPageController {
     @FXML
@@ -39,8 +41,9 @@ public class LoginPageController {
         if (isValidUsername){
             if (Account.isValid(password, "password")){
                 boolean isUsername = Account.isValid(username, "username");
+                String ID = Account.usernameToID(username);
 
-                if(DBTools.exist(username, "users", "username", true) && DBTools.exist(password, "users", "password", true)){
+                if(DBTools.exist(username, "users", "username", true) && DBTools.readCell("users", ID, "password").equals(DigestUtils.sha256Hex(password))){
                     Account.login(username, isUsername);
                     SignUpSignIn.goToMainPage();
                 }

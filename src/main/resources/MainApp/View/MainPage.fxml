@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#PaneMouseClicked" prefHeight="460.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MainPageController">
    <children>
-      <TextField fx:id="searchTextField" layoutX="200.0" layoutY="14.0" onInputMethodTextChanged="#searchIt" prefHeight="25.0" prefWidth="373.0" promptText="Type Username or Subreddit title..." />
-      <ComboBox fx:id="searchComboBox" layoutX="134.0" layoutY="14.0" onAction="#searchComboBoxAction" prefHeight="25.0" prefWidth="56.0" promptText="r/" />
-      <ListView fx:id="searchListView" layoutX="200.0" layoutY="39.0" prefHeight="200.0" prefWidth="300.0"  visible="false"/>
-      <Button layoutX="581.0" layoutY="14.0" mnemonicParsing="false" text="Profile" onAction="#profileClicked" />
-      <Button fx:id="logoutButton" layoutX="636.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutClicked" text="Logout" textFill="#e40707" />
+      <TextField fx:id="searchTextField" layoutX="162.0" layoutY="17.0" onInputMethodTextChanged="#searchIt" prefHeight="25.0" prefWidth="408.0" promptText="Type Username or Subreddit title..." />
+      <ComboBox fx:id="searchComboBox" layoutX="100.0" layoutY="17.0" onAction="#searchComboBoxAction" prefHeight="25.0" prefWidth="56.0" promptText="r/" />
+      <ListView fx:id="searchListView" layoutX="200.0" layoutY="39.0" prefHeight="200.0" prefWidth="300.0" visible="false" />
+      <Button layoutX="580.0" layoutY="17.0" mnemonicParsing="false" onAction="#profileClicked" text="Profile" />
+      <Button fx:id="logoutButton" layoutX="638.0" layoutY="17.0" mnemonicParsing="false" onAction="#logoutClicked" text="Logout" textFill="#e40707" />
+      <ImageView fx:id="logo" fitHeight="64.0" fitWidth="64.0" layoutX="14.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="579.0" layoutY="82.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="115.0" text="My Subreddits">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="579.0" layoutY="124.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="115.0" text="My Posts">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="579.0" layoutY="167.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="115.0" text="My Comments">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="599.0" layoutY="210.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="79.0" text="+" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Pane layoutX="14.0" layoutY="82.0" prefHeight="354.0" prefWidth="555.0" />
    </children>
 </Pane>
-
