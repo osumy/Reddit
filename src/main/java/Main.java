@@ -1,3 +1,5 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
 import org.sqlite.core.DB;
 
 import java.sql.*;
@@ -5,10 +7,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
 
-public class Main {
+public class Main extends Application {
+    @Override
+    public void start(Stage stage) throws Exception{
+
+    }
+
 
     public static void main(String[] args) throws SQLException {
-
+        launch(args);
 
 
         //        Scanner sc = new Scanner(System.in);
