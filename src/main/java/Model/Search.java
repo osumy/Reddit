@@ -1,3 +1,5 @@
+package Model;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -6,7 +8,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class Search {
-    public static Subreddit subreddit;
+    public static Model.Subreddit subreddit;
     public static Account account;
     public static String search;
 
@@ -45,9 +47,9 @@ public class Search {
                 int karma = resultSet.getInt(5);
                 String dispName = resultSet.getString(6);
                 String bio = resultSet.getString(7);
-                ArrayList<String> subreddits = Subreddit.IDtoTitle(DBTools.splitID(resultSet.getString(8)));
+                ArrayList<String> subreddits = Model.Subreddit.IDtoTitle(DBTools.splitID(resultSet.getString(8)));
                 ArrayList<Post> posts = Post.IDtoPostList(DBTools.splitID(resultSet.getString(9)));
-                ArrayList<Comment> comments = Comment.IDtoCommentList(DBTools.splitID(resultSet.getString(10)));
+                ArrayList<Model.Comment> comments = Model.Comment.IDtoCommentList(DBTools.splitID(resultSet.getString(10)));
                 account = new Account(id, username, email, karma, dispName, bio, subreddits, posts, comments);
                 break;
             }

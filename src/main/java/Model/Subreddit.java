@@ -1,4 +1,4 @@
-import org.sqlite.core.DB;
+package Model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

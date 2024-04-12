@@ -1,3 +1,5 @@
+package Model;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.*;

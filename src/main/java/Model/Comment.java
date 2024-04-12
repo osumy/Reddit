@@ -1,3 +1,5 @@
+package Model;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -6,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Comment extends Content{
+public class Comment extends Content {
     private UUID postID;
     private boolean isReply;
     private UUID replyOnID;
@@ -26,11 +28,11 @@ public class Comment extends Content{
 
     public static ArrayList<Comment> IDtoCommentList(List<String> IDList) throws SQLException {
         ArrayList<Comment> CommentList = new ArrayList<>();
-        Statement statement = DBTools.connection.createStatement();
+        Statement statement = Model.DBTools.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM comments");
 
         while (resultSet.next()){
-            if (DBTools.isAmong(resultSet.getString(1), IDList)){
+            if (Model.DBTools.isAmong(resultSet.getString(1), IDList)){
                 UUID id = UUID.fromString(resultSet.getString(1));
                 UUID subredditID = UUID.fromString(resultSet.getString(2));
                 UUID postID = UUID.fromString(resultSet.getString(3));
@@ -39,8 +41,8 @@ public class Comment extends Content{
                 LocalDateTime dateTime = LocalDateTime.parse(resultSet.getString(6));
                 String tags = resultSet.getString(7);
                 int karma = resultSet.getInt(8);
-                ArrayList<UUID> upVotes = DBTools.splitID_UUID(resultSet.getString(9));
-                ArrayList<UUID> downVotes = DBTools.splitID_UUID(resultSet.getString(10));
+                ArrayList<UUID> upVotes = Model.DBTools.splitID_UUID(resultSet.getString(9));
+                ArrayList<UUID> downVotes = Model.DBTools.splitID_UUID(resultSet.getString(10));
                 boolean isReply = resultSet.getInt(11) == 1;
                 UUID replyOnID = UUID.fromString(resultSet.getString(12));
                 CommentList.add(new Comment(id, subredditID, postID, ownerID, text, dateTime, tags, karma, upVotes, downVotes, isReply, replyOnID));
@@ -51,6 +53,6 @@ public class Comment extends Content{
     }
     public void createComment() throws SQLException {
         DBTools.insertComment(id, subredditID, postID, ownerID, text, dateTime.toString(), tags, isReply, replyOnID);
-        DBTools.insertIDtoIDListCell("users", ownerID , "commentID", id);
+        Model.DBTools.insertIDtoIDListCell("users", ownerID , "commentID", id);
     }
 }

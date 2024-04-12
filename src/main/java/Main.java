@@ -1,21 +1,26 @@
+import Model.DBTools;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.sqlite.core.DB;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.UUID;
 
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception{
-
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("View/LoginPage.fxml"));
+        Parent p = fxmlLoader.load();
+        Scene loginScene = new Scene(p);
+        stage.setScene(loginScene);
+        stage.show();
     }
 
 
     public static void main(String[] args) throws SQLException {
         launch(args);
+
 
 
         //        Scanner sc = new Scanner(System.in);
@@ -26,12 +31,12 @@ public class Main extends Application {
 //        //String email = sc.next();
 //        String password = sc.next();
 
-//        Account account = Account.myAccount;
+//        Model.Account account = Model.Account.myAccount;
 //
-////        if (Account.isValid(username, "username") && Account.isValid(email, "email") && Account.isValid(password, "password"))
-////            if (Account.exist(username, "users", "username", true) || Account.exist(email, "users", "email", true))
-//                Account.login(username, true);
-//        Account account = Account.myAccount;
+////        if (Application.Account.isValid(username, "username") && Model.Account.isValid(email, "email") && Application.Account.isValid(password, "password"))
+////            if (Model.Account.exist(username, "users", "username", true) || Model.Account.exist(email, "users", "email", true))
+//                Model.Account.login(username, true);
+//        Application.Account account = Application.Account.myAccount;
 //        int a = 3;
 
 //        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");

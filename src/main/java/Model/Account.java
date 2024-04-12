@@ -1,10 +1,9 @@
+package Model;
+
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -18,7 +17,7 @@ public class Account {
     private String bio;
     private ArrayList<String> mySubreddits;
     private ArrayList<Post> myPosts;
-    private ArrayList<Comment> myComments;
+    private ArrayList<Model.Comment> myComments;
 
     public static Account myAccount;
 
@@ -36,7 +35,7 @@ public class Account {
         myComments = new ArrayList<>();
         myPosts =  new ArrayList<>();
     }
-    public Account(UUID id, String username, String email, int karma, String dispName, String bio, ArrayList<String> mySubreddits, ArrayList<Post> myPosts, ArrayList<Comment> myComments){
+    public Account(UUID id, String username, String email, int karma, String dispName, String bio, ArrayList<String> mySubreddits, ArrayList<Model.Post> myPosts, ArrayList<Model.Comment> myComments){
         this.id = id;
         this.username = username;
         this.email = email;
@@ -55,11 +54,11 @@ public class Account {
     private static void setDispName(String dispName){ myAccount.dispName = dispName; }
     private static void setBio(String bio){ myAccount.bio = bio; }
     private static void setMySubreddits(ArrayList<String> subreddits){ myAccount.mySubreddits = subreddits; }
-    private static void setMyPosts(ArrayList<Post> posts){ myAccount.myPosts = posts; }
+    private static void setMyPosts(ArrayList<Model.Post> posts){ myAccount.myPosts = posts; }
     private static void setMyComments(ArrayList<Comment> comments){ myAccount.myComments = comments; }
     public UUID getID() { return myAccount.id; }
 
-    // ========== Account Management ==========
+    // ========== Application.Account Management ==========
     public static boolean isValid(String data, String type){
         if (type.equals("username"))
             return Pattern.matches("^[\\w][\\w_.]{5,20}", data); // Minimum 5 and Maximum 20 characters, does not start with a . or _
@@ -70,9 +69,9 @@ public class Account {
 
         return false;
     }
-    public void signUp() throws SQLException { DBTools.insertUser(id, username, email, password); }
+    public void signUp() throws SQLException { Model.DBTools.insertUser(id, username, email, password); }
     public static void login(String user, boolean isUsername) throws SQLException {
-        Statement statement = DBTools.connection.createStatement();
+        Statement statement = Model.DBTools.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
 
         while (resultSet.next()){
@@ -92,9 +91,9 @@ public class Account {
                 setKarma(resultSet.getInt(5));
                 setDispName(resultSet.getString(6));
                 setBio(resultSet.getString(7));
-                setMySubreddits(Subreddit.IDtoTitle(DBTools.splitID(resultSet.getString(8))));
-                setMyPosts(Post.IDtoPostList(Pattern.compile(",").splitAsStream(resultSet.getString(9)).toList()));
-                setMyComments(Comment.IDtoCommentList(Pattern.compile(",").splitAsStream(resultSet.getString(10)).toList()));
+                setMySubreddits(Subreddit.IDtoTitle(Model.DBTools.splitID(resultSet.getString(8))));
+                setMyPosts(Model.Post.IDtoPostList(Pattern.compile(",").splitAsStream(resultSet.getString(9)).toList()));
+                setMyComments(Model.Comment.IDtoCommentList(Pattern.compile(",").splitAsStream(resultSet.getString(10)).toList()));
             }
         }
     }
@@ -102,15 +101,15 @@ public class Account {
 
     // ========== Edit Profile ==========
     public void updateEmail(String email) throws SQLException {
-        DBTools.updateCell(email, "users", myAccount.id.toString(), "email");
+        Model.DBTools.updateCell(email, "users", myAccount.id.toString(), "email");
         setUsername(email);
     }
     public void updatePassword(String password) throws SQLException {
-        DBTools.updateCell(password, "users", myAccount.id.toString(), "password");
+        Model.DBTools.updateCell(password, "users", myAccount.id.toString(), "password");
         setUsername(password);
     }
     public void updateDispName(String dispName) throws SQLException {
-        DBTools.updateCell(dispName, "users", myAccount.id.toString(), "dispName");
+        Model.DBTools.updateCell(dispName, "users", myAccount.id.toString(), "dispName");
         setUsername(dispName);
     }
     public void updateBio(String bio) throws SQLException {
@@ -121,11 +120,11 @@ public class Account {
 
     public static ArrayList<String> IDtoUsernameList(ArrayList<String> IDList) throws SQLException {
         ArrayList<String> usernames = new ArrayList<>();
-        Statement statement = DBTools.connection.createStatement();
+        Statement statement = Model.DBTools.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
 
         while (resultSet.next()){
-            if (DBTools.isAmong(resultSet.getString(1), IDList)){
+            if (Model.DBTools.isAmong(resultSet.getString(1), IDList)){
                 usernames.add(resultSet.getString(2));
             }
         }
@@ -133,28 +132,28 @@ public class Account {
         return usernames;
     }
     private static boolean voteAble(String table, String id) throws SQLException {
-        ArrayList<String> upVotes = DBTools.splitID(DBTools.readCell(table, id, "upVotesID"));
-        ArrayList<String> downVotes = DBTools.splitID(DBTools.readCell(table, id, "downVotesID"));
-        return DBTools.isAmong(myAccount.id.toString(), upVotes) && DBTools.isAmong(myAccount.id.toString(), downVotes);
+        ArrayList<String> upVotes = Model.DBTools.splitID(Model.DBTools.readCell(table, id, "upVotesID"));
+        ArrayList<String> downVotes = Model.DBTools.splitID(Model.DBTools.readCell(table, id, "downVotesID"));
+        return Model.DBTools.isAmong(myAccount.id.toString(), upVotes) && Model.DBTools.isAmong(myAccount.id.toString(), downVotes);
     }
     public static void upVote(boolean isPost, UUID id) throws SQLException {
         if (isPost){
             if (voteAble("posts", id.toString()))
-                DBTools.insertIDtoIDListCell("posts", id, "upVotesID", myAccount.id);
+                Model.DBTools.insertIDtoIDListCell("posts", id, "upVotesID", myAccount.id);
         }
         else {
             if (voteAble("comments", id.toString()))
-                DBTools.insertIDtoIDListCell("comments", id, "upVotesID", myAccount.id);
+                Model.DBTools.insertIDtoIDListCell("comments", id, "upVotesID", myAccount.id);
         }
     }
     public static void downVote(boolean isPost, UUID id) throws SQLException {
         if (isPost){
             if (voteAble("posts", id.toString()))
-                DBTools.insertIDtoIDListCell("posts", id, "downVotesID", myAccount.id);
+                Model.DBTools.insertIDtoIDListCell("posts", id, "downVotesID", myAccount.id);
         }
         else {
             if (voteAble("comments", id.toString()))
-                DBTools.insertIDtoIDListCell("comments", id, "downVotesID", myAccount.id);
+                Model.DBTools.insertIDtoIDListCell("comments", id, "downVotesID", myAccount.id);
         }
     }
 }
