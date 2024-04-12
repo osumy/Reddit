@@ -1,7 +1,6 @@
 package Controller;
 
-import MainApp.Main;
-import MainApp.SignUp;
+import MainApp.SignUpSignIn;
 import Model.Account;
 import Model.DBTools;
 import javafx.event.ActionEvent;
@@ -9,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,12 +19,16 @@ public class LoginPageController {
     private PasswordField passwordTextField;
     @FXML
     private Label errorLabel;
+    @FXML
+    private Label errorLabel1;
+    @FXML
+    private Label errorLabel11;
 
     public void newAccount(ActionEvent actionEvent) throws IOException {
-        SignUp.newAccount();
+        SignUpSignIn.newAccount();
     }
 
-    public void login(ActionEvent actionEvent) throws SQLException {
+    public void login(ActionEvent actionEvent) throws SQLException, IOException {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
@@ -37,18 +39,24 @@ public class LoginPageController {
 
                 if(DBTools.exist(username, "users", "username", true) && DBTools.exist(password, "users", "password", true)){
                     Account.login(username, isUsername);
-                    System.out.println("SS");
+                    SignUpSignIn.goToMainPage();
                 }
                 else {
                     errorLabel.setText("Username or Password is not Correct!");
+                    errorLabel1.setText("");
+                    errorLabel11.setText("");
                 }
             }
             else {
-                errorLabel.setText("Password is not valid!");
+                errorLabel.setText("");
+                errorLabel1.setText("");
+                errorLabel11.setText("Invalid");
             }
         }
         else {
-            errorLabel.setText("Username or Email is not valid!");
+            errorLabel.setText("");
+            errorLabel1.setText("Invalid");
+            errorLabel11.setText("");
         }
     }
 }

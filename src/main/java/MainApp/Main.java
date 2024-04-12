@@ -12,6 +12,7 @@ import java.util.Objects;
 
 public class Main extends Application {
     public static Stage loginStage;
+    public static Stage mainStage;
     @Override
     public void start(Stage stage) throws Exception{
         loginStage = new Stage(StageStyle.DECORATED);

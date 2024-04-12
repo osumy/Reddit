@@ -27,5 +27,15 @@
             <Font name="Calibri Light" size="16.0" />
          </font>
       </Label>
+      <Label fx:id="errorLabel1" layoutX="320.0" layoutY="93.0" textFill="#f71010">
+         <font>
+            <Font name="Calibri Light" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorLabel11" layoutX="320.0" layoutY="188.0" textFill="#f71010">
+         <font>
+            <Font name="Calibri Light" size="18.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

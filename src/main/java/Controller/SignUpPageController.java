@@ -1,6 +1,6 @@
 package Controller;
 
-import MainApp.SignUp;
+import MainApp.SignUpSignIn;
 import Model.Account;
 import Model.DBTools;
 import javafx.event.ActionEvent;
@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.sqlite.core.DB;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -36,7 +35,7 @@ public class SignUpPageController {
                     if (DBTools.exist(username, "users", "username", false) && DBTools.exist(email, "users", "email", false)) {
                         Account account = new Account(username, email, password);
                         account.signUp();
-                        SignUp.goBackLogin();
+                        SignUpSignIn.goBackLogin();
                     }
                     else {
                         errorLabel.setText("Username or Email is already taken!");
@@ -58,6 +57,6 @@ public class SignUpPageController {
     }
 
     public void goBackLogin(ActionEvent actionEvent) throws IOException {
-        SignUp.goBackLogin();
+        SignUpSignIn.goBackLogin();
     }
 }
