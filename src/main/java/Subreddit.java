@@ -68,6 +68,7 @@ public class Subreddit {
             newPostsID += posts.get(i);
         }
         DBTools.updateCell(newPostsID, "subreddits", subredditID.toString(), "postsID");
+        DBTools.deleteRow("posts", postID.toString());
     }
     public static void kickUser(UUID subredditID, UUID userID) throws SQLException {
         ArrayList<String> members = DBTools.splitID(DBTools.readCell("subreddits", subredditID.toString(), "membersID"));
@@ -82,5 +83,20 @@ public class Subreddit {
             newMembersID += members.get(i);
         }
         DBTools.updateCell(newMembersID, "subreddits", subredditID.toString(), "membersID");
+
+        ArrayList<String> userSubreddits = DBTools.splitID(DBTools.readCell("users", userID.toString(), "subredditID"));
+        for (int i = 0; i < userSubreddits.size(); i++){
+            if (userSubreddits.get(i).equals(userID.toString())) {
+                userSubreddits.remove(i);
+            }
+        }
+        String newUserSubreddits = "";
+        for (int i = 0; i < userSubreddits.size(); i++){
+            if (i > 0) {
+                newUserSubreddits += ",";
+            }
+            newUserSubreddits += userSubreddits.get(i);
+        }
+        DBTools.updateCell(newUserSubreddits, "users", userID.toString(), "subredditID");
     }
 }

@@ -1,13 +1,17 @@
+import org.sqlite.core.DB;
+import java.util.Collections;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 public class Post extends Content {
     private String title;
+    public static int timeLineSize = 15;
 
     public Post(UUID subredditID, UUID ownerID, String title, String text, LocalDateTime dateTime, String tags, int karma, ArrayList<UUID> upVotes, ArrayList<UUID> downVotes){
         super(UUID.randomUUID(), subredditID, ownerID, text, dateTime, tags, karma, upVotes, downVotes);
@@ -40,5 +44,38 @@ public class Post extends Content {
         }
 
         return PostList;
+    }
+    public void createPost() throws SQLException {
+        DBTools.insertPost(id, subredditID, ownerID, title, text, dateTime.toString(), tags);
+        DBTools.insertIDtoIDListCell("users", ownerID , "postID", id);
+        DBTools.insertIDtoIDListCell("subreddits", subredditID , "postsID", id);
+    }
+    private static ArrayList<String> reverseArrayList(ArrayList<String> list){
+        ArrayList<String> newList = new ArrayList<>();
+        for (int i = list.size()-1; i >= 0; --i)
+            newList.add(list.get(i));
+        return newList;
+    }
+    public static ArrayList<String> getTimeLinePostsID() throws SQLException {
+        ArrayList<String> joinedSubreddits = DBTools.splitID(DBTools.readCell("users", Account.myAccount.getID().toString(), "subredditID"));
+        Statement statement = DBTools.connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM posts");
+        ArrayList<String> IDList = new ArrayList<>();
+
+        while (resultSet.next()){
+            if (DBTools.isAmong(resultSet.getString(2), joinedSubreddits))
+                IDList.add(resultSet.getString(1));
+        }
+
+        return reverseArrayList(IDList);
+    }
+    public static ArrayList<Post> getNewPosts() throws SQLException {
+        ArrayList<Post> allPosts = IDtoPostList(getTimeLinePostsID());
+        ArrayList<Post> newestPosts = new ArrayList<>();
+
+        for (int i = 0; i < timeLineSize; i++)
+            newestPosts.add(allPosts.get(i));
+
+        return newestPosts;
     }
 }
