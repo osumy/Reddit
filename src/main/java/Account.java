@@ -57,6 +57,7 @@ public class Account {
     private static void setMySubreddits(ArrayList<String> subreddits){ myAccount.mySubreddits = subreddits; }
     private static void setMyPosts(ArrayList<Post> posts){ myAccount.myPosts = posts; }
     private static void setMyComments(ArrayList<Comment> comments){ myAccount.myComments = comments; }
+    public UUID getID() { return myAccount.id; }
 
     // ========== Account Management ==========
     public static boolean isValid(String data, String type){
@@ -130,5 +131,30 @@ public class Account {
         }
 
         return usernames;
+    }
+    private static boolean voteAble(String table, String id) throws SQLException {
+        ArrayList<String> upVotes = DBTools.splitID(DBTools.readCell(table, id, "upVotesID"));
+        ArrayList<String> downVotes = DBTools.splitID(DBTools.readCell(table, id, "downVotesID"));
+        return DBTools.isAmong(myAccount.id.toString(), upVotes) && DBTools.isAmong(myAccount.id.toString(), downVotes);
+    }
+    public static void upVote(boolean isPost, UUID id) throws SQLException {
+        if (isPost){
+            if (voteAble("posts", id.toString()))
+                DBTools.insertIDtoIDListCell("posts", id, "upVotesID", myAccount.id);
+        }
+        else {
+            if (voteAble("comments", id.toString()))
+                DBTools.insertIDtoIDListCell("comments", id, "upVotesID", myAccount.id);
+        }
+    }
+    public static void downVote(boolean isPost, UUID id) throws SQLException {
+        if (isPost){
+            if (voteAble("posts", id.toString()))
+                DBTools.insertIDtoIDListCell("posts", id, "downVotesID", myAccount.id);
+        }
+        else {
+            if (voteAble("comments", id.toString()))
+                DBTools.insertIDtoIDListCell("comments", id, "downVotesID", myAccount.id);
+        }
     }
 }
