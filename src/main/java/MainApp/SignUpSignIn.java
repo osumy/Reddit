@@ -1,5 +1,6 @@
 package MainApp;
 
+import Controller.MainPageController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -20,9 +21,18 @@ public class SignUpSignIn {
         Main.mainStage = new Stage();
         Scene mainScene = new Scene(FXMLLoader.load(Objects.requireNonNull(SignUpSignIn.class.getResource("View/MainPage.fxml"))));
         Main.mainStage.setScene(mainScene);
-        Main.loginStage.close();
         Main.mainStage.centerOnScreen();
         Main.mainStage.setResizable(false);
         Main.mainStage.show();
+        Main.loginStage.close();
+    }
+    public static void goFromMainPageToLoginPage() throws IOException {
+        Main.loginStage = new Stage();
+        Scene loginScene = new Scene(FXMLLoader.load(Objects.requireNonNull(SignUpSignIn.class.getResource("View/LoginPage.fxml"))));
+        Main.loginStage.setScene(loginScene);
+        Main.loginStage.centerOnScreen();
+        Main.loginStage.setResizable(false);
+        Main.loginStage.show();
+        Main.mainStage.close();
     }
 }

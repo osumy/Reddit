@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class Search {
-    public static Model.Subreddit subreddit;
+    public static Subreddit subreddit;
     public static Account account;
     public static String search;
 
