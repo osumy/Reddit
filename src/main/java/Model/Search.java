@@ -1,8 +1,6 @@
 package Model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -16,7 +14,8 @@ public class Search {
         ArrayList<String> searchResult = new ArrayList<>();
         boolean isUser = search.charAt(0) == 'u';
         String searchText = search.substring(2);
-        Statement statement = DBTools.connection.createStatement();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
         ResultSet resultSet;
 
         if (isUser){
@@ -33,11 +32,12 @@ public class Search {
                     searchResult.add(resultSet.getString(2));
             }
         }
-
+        connection.close();
         return searchResult;
     }
     public static void userSearch(String username) throws SQLException {
-        Statement statement = DBTools.connection.createStatement();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
 
         while (resultSet.next()) {
@@ -51,12 +51,16 @@ public class Search {
                 ArrayList<Post> posts = Post.IDtoPostList(DBTools.splitID(resultSet.getString(9)));
                 ArrayList<Model.Comment> comments = Model.Comment.IDtoCommentList(DBTools.splitID(resultSet.getString(10)));
                 account = new Account(id, username, email, karma, dispName, bio, subreddits, posts, comments);
+                connection.close();
                 break;
             }
         }
+
+        connection.close();
     }
     public static void subredditSearch(String title) throws SQLException {
-        Statement statement = DBTools.connection.createStatement();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM subreddits");
 
         while (resultSet.next()) {
@@ -68,9 +72,11 @@ public class Search {
                 UUID mainAdminID = UUID.fromString(resultSet.getString(6));
                 ArrayList<UUID> adminsID = DBTools.splitID_UUID(resultSet.getString(7));
                 subreddit = new Subreddit(id, title, description, posts, membersID, mainAdminID, adminsID);
+                connection.close();
                 break;
             }
         }
+        connection.close();
     }
 
 }

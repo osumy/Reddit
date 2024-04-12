@@ -1,5 +1,7 @@
 package Controller;
 
+import MainApp.Main;
+import MainApp.Profile;
 import MainApp.SignUpSignIn;
 import Model.Account;
 import Model.Search;
@@ -27,6 +29,7 @@ public class MainPageController {
     public ListView<String> searchListView;
     @FXML
     public Button logoutButton;
+
 
     @FXML
     public void initialize() {
@@ -68,5 +71,9 @@ public class MainPageController {
     public void logoutClicked(ActionEvent actionEvent) throws IOException {
         Account.logout();
         SignUpSignIn.goFromMainPageToLoginPage();
+    }
+
+    public void profileClicked(ActionEvent actionEvent) throws IOException {
+        Profile.showProfile(Main.mainStage, Account.myAccount.getID(), false);
     }
 }

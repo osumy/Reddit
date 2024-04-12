@@ -7,8 +7,9 @@
    <children>
       <TextField fx:id="searchTextField" layoutX="200.0" layoutY="14.0" onInputMethodTextChanged="#searchIt" prefHeight="25.0" prefWidth="373.0" promptText="Type Username or Subreddit title..." />
       <ComboBox fx:id="searchComboBox" layoutX="134.0" layoutY="14.0" onAction="#searchComboBoxAction" prefHeight="25.0" prefWidth="56.0" promptText="r/" />
-      <ListView fx:id="searchListView" layoutX="200.0" layoutY="39.0" prefHeight="200.0" prefWidth="300.0" visible="false" />
-      <Button layoutX="581.0" layoutY="14.0" mnemonicParsing="false" text="Profile" />
+      <ListView fx:id="searchListView" layoutX="200.0" layoutY="39.0" prefHeight="200.0" prefWidth="300.0"  visible="false"/>
+      <Button layoutX="581.0" layoutY="14.0" mnemonicParsing="false" text="Profile" onAction="#profileClicked" />
       <Button fx:id="logoutButton" layoutX="636.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutClicked" text="Logout" textFill="#e40707" />
    </children>
 </Pane>
+

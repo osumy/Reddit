@@ -4,38 +4,24 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class DBTools {
-    public static Connection connection;
-
-    static {
-        try {
-            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public DBTools() throws SQLException {}
-    public static void reconnect(){
-        try {
-            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static void fillList(ArrayList<String> list, String table, String column) throws SQLException {
-        reconnect();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table);
 
         while (resultSet.next()){
             list.add(resultSet.getString(column));
         }
+        connection.close();
     }
     public static boolean isAmong(String data, List<String> list){
         for (String s : list)
@@ -63,7 +49,6 @@ public class DBTools {
         return IDArrayList;
     }
     public static void insertIDtoIDListCell(String table, UUID rowID, String column, UUID id) throws SQLException {
-        reconnect();
         String newIDList = "";
         String DBIDList = DBTools.readCell(table, rowID.toString(), column);
         if (DBIDList == null || DBIDList.isEmpty())
@@ -87,22 +72,29 @@ public class DBTools {
         return !isExist;
     }
     public static void updateCell(String data, String table, String id, String column) throws SQLException {
-        reconnect();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
         Statement statement = connection.createStatement();
-        statement.executeUpdate("UPDATE " + table + " SET " + column + "='" + data + "' WHERE ID='" + id + "'");
+        String sql = "UPDATE " + table + " SET " + column + "='" + data + "' WHERE ID='" + id + "'";
+        statement.executeUpdate(sql);
+        connection.close();
     }
     public static String readCell(String table, String id, String column) throws SQLException {
-        reconnect();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table);
         while (resultSet.next()){
-            if (resultSet.getString(1).equals(id))
-                return resultSet.getString(column);
+            if (resultSet.getString(1).equals(id)){
+                String str = resultSet.getString(column);
+                connection.close();
+                return str;
+            }
         }
+
+        connection.close();
         return null;
     }
     public static void insertUser(UUID id, String username, String email, String password) throws SQLException {
-        reconnect();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
         String sql = "INSERT INTO users (ID, username, email, password, karma) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
@@ -112,9 +104,10 @@ public class DBTools {
         preparedStmt.setString (4, password);
         preparedStmt.setInt (5, 0);
         preparedStmt.execute();
+        connection.close();
     }
     public static void insertSubreddit(UUID id, String title, String description, UUID mainAdminID) throws SQLException {
-        reconnect();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
         String sql = "INSERT INTO subreddits (ID, title, description, membersID, mainAdminID, adminsID)" + " VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
@@ -125,9 +118,10 @@ public class DBTools {
         preparedStmt.setString (5, mainAdminID.toString());
         preparedStmt.setString (6, mainAdminID.toString());
         preparedStmt.execute();
+        connection.close();
     }
     public static void insertPost(UUID id, UUID subredditID, UUID ownerID, String title, String text, String dateTime, String tags) throws SQLException {
-        reconnect();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
         String sql = "INSERT INTO posts (ID, subredditID, ownerID, title, text, dateTime, tags, karma)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
@@ -140,9 +134,10 @@ public class DBTools {
         preparedStmt.setString (7, tags);
         preparedStmt.setInt (8, 0);
         preparedStmt.execute();
+        connection.close();
     }
     public static void insertComment(UUID id, UUID subredditID, UUID postID, UUID ownerID, String text, String dateTime, String tags, boolean isReply, UUID replyOnID) throws SQLException {
-        reconnect();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
         if (!isReply) {
             String sql = "INSERT INTO comments (ID, subredditID, postID, ownerID, text, dateTime, tags, karma, isReply)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -157,6 +152,7 @@ public class DBTools {
             preparedStmt.setInt(8, 0);
             preparedStmt.setInt(9, 0);
             preparedStmt.execute();
+            connection.close();
         }
         else {
             String sql = "INSERT INTO comments (ID, subredditID, postID, ownerID, text, dateTime, tags, karma, isReply, replyOnID)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -173,11 +169,13 @@ public class DBTools {
             preparedStmt.setInt(9, 1);
             preparedStmt.setString(7, replyOnID.toString());
             preparedStmt.execute();
+            connection.close();
         }
     }
     public static void deleteRow(String table, String ID) throws SQLException {
-        reconnect();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
         Statement statement = connection.createStatement();
         statement.executeUpdate("DELETE FROM '" + table + "' WHERE ID='" + ID + "'");
+        connection.close();
     }
 }

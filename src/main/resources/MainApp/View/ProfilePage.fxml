@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="598.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ProfilePageController">
+   <children>
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBackClicked" text="🠈" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <Label layoutX="271.0" layoutY="21.0" text="Profile">
+         <font>
+            <Font name="Calibri" size="22.0" />
+         </font>
+      </Label>
+      <Label fx:id="usernameLabel" layoutX="73.0" layoutY="70.0" text="u/">
+         <font>
+            <Font name="Calibri" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="karmaLabel" layoutX="455.0" layoutY="70.0" text="Karma: ">
+         <font>
+            <Font name="Calibri Light" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="dispalynameLabel" layoutX="73.0" layoutY="114.0" text="Display Name:">
+         <font>
+            <Font name="Calibri Light" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="displaynameEditButton" layoutX="471.0" layoutY="111.0" mnemonicParsing="false" onAction="#displaynameEditClick" text="Edit" textAlignment="CENTER">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+      <TextField fx:id="displaynameUpdateTextField" layoutX="430.0" layoutY="111.0" prefHeight="29.0" prefWidth="156.0" visible="false" />
+      <Button fx:id="displaynameUpdateButton" layoutX="378.0" layoutY="111.0" mnemonicParsing="false" onAction="#displaynameUpdateClick" text="✓" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+      <Label fx:id="emailLabel" layoutX="73.0" layoutY="150.0" text="Email:">
+         <font>
+            <Font name="Calibri Light" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="emailEditButton" layoutX="471.0" layoutY="147.0" mnemonicParsing="false" text="Edit" textAlignment="CENTER">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+      <TextField fx:id="displaynameUpdateTextField1" layoutX="430.0" layoutY="147.0" prefHeight="29.0" prefWidth="156.0" visible="false" />
+      <Button fx:id="displaynameUpdateButton1" layoutX="378.0" layoutY="147.0" mnemonicParsing="false" text="✓" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="73.0" layoutY="186.0" text="Password">
+         <font>
+            <Font name="Calibri Light" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="passwordEditButton" layoutX="471.0" layoutY="183.0" mnemonicParsing="false" text="Edit" textAlignment="CENTER">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+      <TextField fx:id="displaynameUpdateTextField11" layoutX="430.0" layoutY="183.0" prefHeight="29.0" prefWidth="156.0" visible="false" />
+      <Button fx:id="displaynameUpdateButton11" layoutX="378.0" layoutY="183.0" mnemonicParsing="false" text="✓" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+      <TextArea fx:id="bioTextArea" layoutX="69.0" layoutY="278.0" prefHeight="234.0" prefWidth="459.0" />
+      <Label layoutX="287.0" layoutY="240.0" text="Bio">
+         <font>
+            <Font name="Calibri Light" size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="bioEditButton" layoutX="277.0" layoutY="529.0" mnemonicParsing="false" onAction="#editBioClicked" onMouseClicked="#editBioClicked" text="Edit" textAlignment="CENTER">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

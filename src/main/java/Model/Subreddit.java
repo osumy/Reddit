@@ -1,8 +1,6 @@
 package Model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,14 +37,15 @@ public class Subreddit {
     public void newSubreddit() throws SQLException { DBTools.insertSubreddit(id, title, description, mainAdminID); }
     public static ArrayList<String> IDtoTitle(List<String> IDList) throws SQLException {
         ArrayList<String> titleList = new ArrayList<>();
-        Statement statement = DBTools.connection.createStatement();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM subreddits");
 
         while (resultSet.next()){
             if (DBTools.isAmong(resultSet.getString(1), IDList))
                 titleList.add(resultSet.getString(2));
         }
-
+        connection.close();
         return titleList;
     }
     public static void joinSubreddit(UUID subredditID, UUID userID) throws SQLException {

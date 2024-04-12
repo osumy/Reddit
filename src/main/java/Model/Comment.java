@@ -1,8 +1,6 @@
 package Model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,8 @@ public class Comment extends Content {
 
     public static ArrayList<Comment> IDtoCommentList(List<String> IDList) throws SQLException {
         ArrayList<Comment> CommentList = new ArrayList<>();
-        Statement statement = Model.DBTools.connection.createStatement();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM comments");
 
         while (resultSet.next()){
@@ -49,6 +48,7 @@ public class Comment extends Content {
             }
         }
 
+        connection.close();
         return CommentList;
     }
     public void createComment() throws SQLException {

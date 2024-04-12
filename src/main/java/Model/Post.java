@@ -1,8 +1,6 @@
 package Model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,8 @@ public class Post extends Content {
 
     public static ArrayList<Post> IDtoPostList(List<String> IDList) throws SQLException {
         ArrayList<Post> PostList = new ArrayList<>();
-        Statement statement = DBTools.connection.createStatement();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM posts");
 
         while (resultSet.next()){
@@ -36,12 +35,21 @@ public class Post extends Content {
                 LocalDateTime dateTime = LocalDateTime.parse(resultSet.getString(6));
                 String tags = resultSet.getString(7);
                 int karma = resultSet.getInt(8);
-                ArrayList<UUID> upVotes = DBTools.splitID_UUID(resultSet.getString(9));
-                ArrayList<UUID> downVotes = DBTools.splitID_UUID(resultSet.getString(10));
+                ArrayList<UUID> upVotes;
+                if (DBTools.splitID_UUID(resultSet.getString(9)) != null)
+                    upVotes = DBTools.splitID_UUID(resultSet.getString(9));
+                else
+                    upVotes = new ArrayList<>();
+
+                ArrayList<UUID> downVotes;
+                if (DBTools.splitID_UUID(resultSet.getString(10)) != null)
+                    downVotes = DBTools.splitID_UUID(resultSet.getString(10));
+                else
+                    downVotes = new ArrayList<>();
                 PostList.add(new Post(id, subredditID, ownerID, title, text, dateTime, tags, karma, upVotes, downVotes));
             }
         }
-
+        connection.close();
         return PostList;
     }
     public void createPost() throws SQLException {
@@ -57,7 +65,8 @@ public class Post extends Content {
     }
     public static ArrayList<String> getTimeLinePostsID() throws SQLException {
         ArrayList<String> joinedSubreddits = DBTools.splitID(DBTools.readCell("users", Account.myAccount.getID().toString(), "subredditID"));
-        Statement statement = DBTools.connection.createStatement();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM posts");
         ArrayList<String> IDList = new ArrayList<>();
 
@@ -65,7 +74,7 @@ public class Post extends Content {
             if (DBTools.isAmong(resultSet.getString(2), joinedSubreddits))
                 IDList.add(resultSet.getString(1));
         }
-
+        connection.close();
         return reverseArrayList(IDList);
     }
     public static ArrayList<Post> getNewPosts() throws SQLException {

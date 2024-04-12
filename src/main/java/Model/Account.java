@@ -71,8 +71,8 @@ public class Account {
     }
     public void signUp() throws SQLException { Model.DBTools.insertUser(id, username, email, password); }
     public static void login(String user, boolean isUsername) throws SQLException {
-        DBTools.reconnect();
-        Statement statement = Model.DBTools.connection.createStatement();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
 
         while (resultSet.next()){
@@ -107,34 +107,36 @@ public class Account {
                 else {
                     setMyComments(Model.Comment.IDtoCommentList(Pattern.compile(",").splitAsStream(resultSet.getString(10)).toList()));
                 }
+                connection.close();
                 break;
             }
         }
+        connection.close();
     }
     public static void logout(){ myAccount = null; }
 
     // ========== Edit Profile ==========
-    public void updateEmail(String email) throws SQLException {
+    public static void updateEmail(String email) throws SQLException {
         Model.DBTools.updateCell(email, "users", myAccount.id.toString(), "email");
-        setUsername(email);
+        setEmail(email);
     }
-    public void updatePassword(String password) throws SQLException {
+    public static void updatePassword(String password) throws SQLException {
         Model.DBTools.updateCell(password, "users", myAccount.id.toString(), "password");
-        setUsername(password);
     }
-    public void updateDispName(String dispName) throws SQLException {
+    public static void updateDispName(String dispName) throws SQLException {
         Model.DBTools.updateCell(dispName, "users", myAccount.id.toString(), "dispName");
-        setUsername(dispName);
+        setDispName(dispName);
     }
-    public void updateBio(String bio) throws SQLException {
+    public static void updateBio(String bio) throws SQLException {
         DBTools.updateCell(bio, "users", myAccount.id.toString(), "bio");
-        setUsername(bio);
+        setBio(bio);
     }
 
 
     public static ArrayList<String> IDtoUsernameList(ArrayList<String> IDList) throws SQLException {
         ArrayList<String> usernames = new ArrayList<>();
-        Statement statement = Model.DBTools.connection.createStatement();
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
 
         while (resultSet.next()){
@@ -143,6 +145,7 @@ public class Account {
             }
         }
 
+        connection.close();
         return usernames;
     }
     private static boolean voteAble(String table, String id) throws SQLException {

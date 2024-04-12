@@ -9,10 +9,16 @@ import javafx.stage.StageStyle;
 
 import java.sql.*;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Main extends Application {
     public static Stage loginStage;
     public static Stage mainStage;
+    public static Stage prevStage;
+    public static Stage profileStage;
+    public static UUID profileID;
+    public static boolean isEditableProfile;
+
     @Override
     public void start(Stage stage) throws Exception{
         loginStage = new Stage(StageStyle.DECORATED);
@@ -26,7 +32,7 @@ public class Main extends Application {
 
     public static void main(String[] args) throws SQLException {
         launch(args);
-
+        //DBTools.updateCell("a1s2", "users", "a17893b4-42c0-40bf-9e78-6076614d5b82", "bio");
 
         //        Scanner sc = new Scanner(System.in);
 //        String username = sc.next();
@@ -69,6 +75,5 @@ public class Main extends Application {
 //        Updating...
 //        statement.executeUpdate("UPDATE subreddits SET title='abc' WHERE title='aa'"); //WHERE ... AND ...
 
-        DBTools.connection.close();
     }
 }

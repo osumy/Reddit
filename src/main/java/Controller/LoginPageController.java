@@ -29,8 +29,8 @@ public class LoginPageController {
     }
 
     public void login(ActionEvent actionEvent) throws SQLException, IOException {
-        SignUpSignIn.goToMainPage();
-        //return;
+        usernameTextField.setText("AmirAli");
+        passwordTextField.setText("Artin181818.");
 
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
