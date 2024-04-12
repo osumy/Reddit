@@ -14,11 +14,12 @@ public class Main extends Application {
     public static Stage loginStage;
     @Override
     public void start(Stage stage) throws Exception{
-        loginStage = new Stage(StageStyle.UTILITY);
+        loginStage = new Stage(StageStyle.DECORATED);
         Scene loginScene = new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("View/LoginPage.fxml"))));
         loginStage.setScene(loginScene);
         loginStage.centerOnScreen();
         loginStage.show();
+        loginStage.setResizable(false);
     }
 
 

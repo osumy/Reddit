@@ -13,4 +13,8 @@ public class SignUp {
         Scene signupScene = new Scene(FXMLLoader.load(Objects.requireNonNull(SignUp.class.getResource("View/SignUpPage.fxml"))));
         Main.loginStage.setScene(signupScene);
     }
+    public static void goBackLogin() throws IOException {
+        Scene signupScene = new Scene(FXMLLoader.load(Objects.requireNonNull(SignUp.class.getResource("View/LoginPage.fxml"))));
+        Main.loginStage.setScene(signupScene);
+    }
 }

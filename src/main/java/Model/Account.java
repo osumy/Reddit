@@ -71,17 +71,20 @@ public class Account {
     }
     public void signUp() throws SQLException { Model.DBTools.insertUser(id, username, email, password); }
     public static void login(String user, boolean isUsername) throws SQLException {
+        DBTools.reconnect();
         Statement statement = Model.DBTools.connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
 
         while (resultSet.next()){
             boolean isOK = false;
-            if (isUsername)
+            if (isUsername) {
                 if (resultSet.getString(2).equals(user))
                     isOK = true;
-            else
+            }
+            else{
                 if (resultSet.getString(3).equals(user))
                     isOK = true;
+                }
             if (isOK){
                 myAccount = new Account();
                 setId(UUID.fromString(resultSet.getString(1)));
@@ -92,8 +95,18 @@ public class Account {
                 setDispName(resultSet.getString(6));
                 setBio(resultSet.getString(7));
                 setMySubreddits(Subreddit.IDtoTitle(Model.DBTools.splitID(resultSet.getString(8))));
-                setMyPosts(Model.Post.IDtoPostList(Pattern.compile(",").splitAsStream(resultSet.getString(9)).toList()));
-                setMyComments(Model.Comment.IDtoCommentList(Pattern.compile(",").splitAsStream(resultSet.getString(10)).toList()));
+                if (resultSet.getString(9) == null || resultSet.getString(9).isEmpty()) {
+                    setMyPosts(new ArrayList<>());
+                }
+                else {
+                    setMyPosts(Model.Post.IDtoPostList(Pattern.compile(",").splitAsStream(resultSet.getString(9)).toList()));
+                }
+                if (resultSet.getString(10) == null || resultSet.getString(10).isEmpty()) {
+                    setMyComments(new ArrayList<>());
+                }
+                else {
+                    setMyComments(Model.Comment.IDtoCommentList(Pattern.compile(",").splitAsStream(resultSet.getString(10)).toList()));
+                }
                 break;
             }
         }

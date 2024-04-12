@@ -20,8 +20,16 @@ public class DBTools {
     }
 
     public DBTools() throws SQLException {}
+    public static void reconnect(){
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void fillList(ArrayList<String> list, String table, String column) throws SQLException {
+        reconnect();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table);
 
@@ -55,6 +63,7 @@ public class DBTools {
         return IDArrayList;
     }
     public static void insertIDtoIDListCell(String table, UUID rowID, String column, UUID id) throws SQLException {
+        reconnect();
         String newIDList = "";
         String DBIDList = DBTools.readCell(table, rowID.toString(), column);
         if (DBIDList == null || DBIDList.isEmpty())
@@ -78,10 +87,12 @@ public class DBTools {
         return !isExist;
     }
     public static void updateCell(String data, String table, String id, String column) throws SQLException {
+        reconnect();
         Statement statement = connection.createStatement();
         statement.executeUpdate("UPDATE " + table + " SET " + column + "='" + data + "' WHERE ID='" + id + "'");
     }
     public static String readCell(String table, String id, String column) throws SQLException {
+        reconnect();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + table);
         while (resultSet.next()){
@@ -91,6 +102,7 @@ public class DBTools {
         return null;
     }
     public static void insertUser(UUID id, String username, String email, String password) throws SQLException {
+        reconnect();
         String sql = "INSERT INTO users (ID, username, email, password, karma) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
@@ -102,6 +114,7 @@ public class DBTools {
         preparedStmt.execute();
     }
     public static void insertSubreddit(UUID id, String title, String description, UUID mainAdminID) throws SQLException {
+        reconnect();
         String sql = "INSERT INTO subreddits (ID, title, description, membersID, mainAdminID, adminsID)" + " VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
@@ -114,6 +127,7 @@ public class DBTools {
         preparedStmt.execute();
     }
     public static void insertPost(UUID id, UUID subredditID, UUID ownerID, String title, String text, String dateTime, String tags) throws SQLException {
+        reconnect();
         String sql = "INSERT INTO posts (ID, subredditID, ownerID, title, text, dateTime, tags, karma)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
@@ -128,6 +142,7 @@ public class DBTools {
         preparedStmt.execute();
     }
     public static void insertComment(UUID id, UUID subredditID, UUID postID, UUID ownerID, String text, String dateTime, String tags, boolean isReply, UUID replyOnID) throws SQLException {
+        reconnect();
         if (!isReply) {
             String sql = "INSERT INTO comments (ID, subredditID, postID, ownerID, text, dateTime, tags, karma, isReply)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -161,6 +176,7 @@ public class DBTools {
         }
     }
     public static void deleteRow(String table, String ID) throws SQLException {
+        reconnect();
         Statement statement = connection.createStatement();
         statement.executeUpdate("DELETE FROM '" + table + "' WHERE ID='" + ID + "'");
     }
