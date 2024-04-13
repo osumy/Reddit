@@ -18,6 +18,7 @@ public class Main extends Application {
     public static Stage profileStage;
     public static UUID profileID;
     public static boolean isEditableProfile;
+    public static Stage newSubredditStage;
 
     @Override
     public void start(Stage stage) throws Exception{

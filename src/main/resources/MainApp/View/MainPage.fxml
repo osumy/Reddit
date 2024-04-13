@@ -28,7 +28,7 @@
             <Font name="Calibri Light" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="599.0" layoutY="210.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="79.0" text="+" textAlignment="CENTER">
+      <Button fx:id="createSubredditButton" layoutX="599.0" layoutY="210.0" mnemonicParsing="false" onAction="#createSubreddit" prefHeight="40.0" prefWidth="79.0" text="+" textAlignment="CENTER">
          <font>
             <Font size="18.0" />
          </font>

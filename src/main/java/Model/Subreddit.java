@@ -34,7 +34,10 @@ public class Subreddit {
         this.adminsID = adminsID;
     }
 
-    public void newSubreddit() throws SQLException { DBTools.insertSubreddit(id, title, description, mainAdminID); }
+    public void newSubreddit() throws SQLException {
+        DBTools.insertSubreddit(id, title, description, mainAdminID);
+        DBTools.insertIDtoIDListCell("users", mainAdminID, "subredditID", id);
+    }
     public static ArrayList<String> IDtoTitle(List<String> IDList) throws SQLException {
         ArrayList<String> titleList = new ArrayList<>();
         Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/redditDB.db");

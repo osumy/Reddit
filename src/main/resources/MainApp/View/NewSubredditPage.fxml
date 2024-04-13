@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.NewSubredditPageController">
+   <children>
+      <Label layoutX="33.0" layoutY="24.0" text="Create New Subreddit">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font></Label>
+      <TextField layoutX="151.0" layoutY="68.0" promptText="Title..." />
+      <TextArea layoutX="34.0" layoutY="105.0" prefHeight="130.0" prefWidth="379.0" promptText="Description..." />
+      <Button layoutX="346.0" layoutY="25.0" mnemonicParsing="false" onAction="#newSubreddit" text="Submit">
+         <font>
+            <Font name="Calibri Light" size="16.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
